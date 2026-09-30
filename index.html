@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#070611" />
+    <meta
+      name="description"
+      content="QRS Web Flasher — flash ESP32 firmware from your browser."
+    />
+    <link rel="icon" type="image/jpeg" href="./qrs-brand-photo.jpg" />
+    <title>ESP32 FLASHER ALL IN ONE — QRS firmware tool</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="QRS Web Flasher home">
+          <img class="brand-logo" src="./qrs-brand-photo.jpg" alt="" />
+          <span class="brand-copy">
+            <span class="brand-name">QRS <strong>ESP32</strong></span>
+            <span class="brand-caption">WEB FLASHER</span>
+          </span>
+        </a>
+        <div class="connection-toolbar">
+          <div class="connection-status" id="device-status" aria-live="polite">
+            <span class="status-dot"></span>
+            <span id="status-text">DISCONNECTED</span>
+          </div>
+          <span class="device-details" id="device-details" hidden></span>
+          <div class="baud-control">
+            <label class="visually-hidden" for="baud-rate">Serial baud rate</label>
+            <select id="baud-rate" aria-label="Serial baud rate">
+              <option value="115200" selected>115200</option>
+              <option value="230400">230400</option>
+              <option value="460800">460800</option>
+              <option value="921600">921600</option>
+            </select>
+          </div>
+          <button class="button button-connect" id="connect-button" type="button">
+            <span class="button-bolt" aria-hidden="true">ϟ</span>
+            CONNECT
+          </button>
+          <button class="button button-disconnect" id="disconnect-button" type="button" hidden>
+            DISCONNECT
+          </button>
+        </div>
+      </header>
+
+      <nav class="dashboard-nav" aria-label="Dashboard">
+        <span class="dashboard-nav-label">CLIENT DASHBOARD</span>
+        <a class="dashboard-tab" href="./owner.html">OWNER DASHBOARD</a>
+        <span class="demo-tag">DEMO ONLY</span>
+      </nav>
+
+      <main>
+        <div class="demo-notice" role="note">
+          Demo only: no real payment is processed, and these local balances are not secure accounts. Live GCash, Palawan Pay, GoTyme Bank, or PayMaya payments need a payment API and server-side verification.
+        </div>
+
+        <section class="credit-panel" aria-labelledby="client-dashboard-title">
+            <div class="dashboard-heading">
+              <div>
+                <p class="eyebrow">CLIENT DASHBOARD · DEMO CLIENT 001</p>
+                <h2 id="client-dashboard-title">Your credits</h2>
+              </div>
+              <div class="credit-balance">
+                <strong id="client-credit-balance">0</strong>
+                <span>CREDITS</span>
+              </div>
+            </div>
+
+            <form class="topup-form" id="topup-form">
+              <label class="dashboard-field package-field" for="topup-package">
+                <span>Choose a credit package</span>
+                <select id="topup-package" required>
+                  <option value="one-credit">1 credit — ₱200</option>
+                  <option value="five-credits">5 credits — ₱700</option>
+                  <option value="unlimited">Unlimited lifetime — ₱5,000</option>
+                </select>
+              </label>
+              <label class="dashboard-field" for="payment-method">
+                <span>Payment method</span>
+                <select id="payment-method" required>
+                  <option value="GCash">GCash</option>
+                  <option value="Palawan Pay">Palawan Pay</option>
+                  <option value="GoTyme Bank">GoTyme Bank</option>
+                  <option value="PayMaya">PayMaya</option>
+                </select>
+              </label>
+              <label class="dashboard-field reference-field" for="payment-reference">
+                <span>Payment reference / TXID</span>
+                <input id="payment-reference" type="text" maxlength="120" placeholder="Demo reference only" required />
+              </label>
+              <button class="button button-connect topup-submit" type="submit">SUBMIT TOP-UP REQUEST</button>
+            </form>
+            <p class="dashboard-help">One credit is used per successful flash operation. The unlimited lifetime package does not use credits. Top-up requests are demo-only and require owner review; no payment is sent or verified.</p>
+            <p class="dashboard-feedback" id="client-feedback" role="status" hidden></p>
+
+            <div class="table-heading">
+              <h3>Your top-up requests</h3>
+              <span class="file-count" id="client-request-count">0 REQUESTS</span>
+            </div>
+            <div class="request-list" id="client-request-list" aria-live="polite"></div>
+          </section>
+
+        <section class="hero-card" aria-labelledby="hero-title">
+          <div class="hero-glow" aria-hidden="true"></div>
+          <div class="hero-content">
+            <div class="hero-logo-frame">
+              <img src="./qrs-brand-photo.jpg" alt="QUAMBAO Repair Shop" />
+              <span class="hero-logo-pulse" aria-hidden="true"></span>
+            </div>
+            <p class="hero-wordmark"><span>QRS</span><strong>WEB FLASHER</strong></p>
+            <p class="hero-kicker">ESP32 FLASHER ALL IN ONE</p>
+            <h1 id="hero-title">Flash your <span>ESP</span> with confidence.</h1>
+            <p class="hero-description">No drivers. No installs. Just your browser and a USB cable.</p>
+            <button class="button button-connect hero-connect" id="hero-connect-button" type="button">
+              <span class="button-bolt" aria-hidden="true">ϟ</span>
+              CONNECT DEVICE
+            </button>
+            <p class="browser-warning" id="browser-warning" hidden>
+              Web Serial needs Chrome or Edge on HTTPS or localhost.
+            </p>
+
+            <div class="steps-grid" aria-label="How to flash">
+              <div class="step-card">
+                <span class="step-number">1</span>
+                <p>Click <strong>Connect</strong> to choose your ESP32.</p>
+              </div>
+              <div class="step-card">
+                <span class="step-number">2</span>
+                <p>Plug in your board and select its serial port.</p>
+              </div>
+              <div class="step-card">
+                <span class="step-number">3</span>
+                <p>Add your <strong>.bin</strong> file and set its address.</p>
+              </div>
+              <div class="step-card">
+                <span class="step-number">4</span>
+                <p>Click <strong>Flash firmware</strong> to program your board.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="flash-panel" aria-labelledby="firmware-title">
+          <div class="panel-heading">
+            <div class="section-title">
+              <span class="section-number">03</span>
+              <div>
+                <p class="eyebrow">FIRMWARE SETUP</p>
+                <h2 id="firmware-title">Choose your .bin files</h2>
+              </div>
+            </div>
+            <span class="file-count" id="file-count">0 FILES</span>
+          </div>
+
+          <label class="drop-zone" id="drop-zone" for="firmware-input">
+            <input id="firmware-input" type="file" accept=".bin,application/octet-stream" multiple />
+            <span class="upload-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 15v4h14v-4" />
+              </svg>
+            </span>
+            <span class="drop-title">Drop .bin files here</span>
+            <span class="drop-hint">or <span>browse files</span> from your computer</span>
+          </label>
+          <div class="firmware-list" id="firmware-list" aria-live="polite"></div>
+          <p class="firmware-note">
+            Enter each flash address from your firmware release notes.
+          </p>
+
+          <div class="flash-controls">
+            <div class="flash-options">
+              <label class="checkbox-row">
+                <input id="erase-checkbox" type="checkbox" />
+                <span class="custom-checkbox" aria-hidden="true"></span>
+                <span>Erase all flash before writing</span>
+              </label>
+              <p class="erase-warning">This also removes saved settings and device data.</p>
+            </div>
+            <p class="firmware-note" id="flash-credit-note">Each successful flash uses 1 credit. Unlimited plan: unlimited flashes.</p>
+            <button class="button button-flash" id="flash-button" type="button" disabled>
+              <span>FLASH FIRMWARE</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M4 10h12m-5-5 5 5-5 5" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="progress-wrap" id="progress-wrap" hidden>
+            <div class="progress-copy">
+              <span id="progress-label">Preparing to flash…</span>
+              <span id="progress-percent">0%</span>
+            </div>
+            <div class="progress-track" role="progressbar" aria-label="Flash progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <span id="progress-bar"></span>
+            </div>
+          </div>
+
+          <div class="result-message" id="result-message" role="status" hidden></div>
+        </section>
+
+        <section class="output-panel" aria-labelledby="output-title">
+          <div class="output-heading">
+            <h2 id="output-title"><span class="output-indicator"></span> OUTPUT</h2>
+            <div class="output-actions">
+              <label class="autoscroll-control">
+                <input id="autoscroll-checkbox" type="checkbox" checked />
+                <span>Autoscroll</span>
+              </label>
+              <button class="button button-small button-copy" id="copy-output-button" type="button">▣ COPY</button>
+              <button class="button button-small button-clear" id="clear-output-text-button" type="button">× CLEAR</button>
+            </div>
+          </div>
+          <div class="terminal" id="output-terminal" role="log" aria-live="polite" aria-label="Flasher output">
+            <span class="terminal-label">QRS Terminal</span>
+            <span class="terminal-line">Click Connect to start.</span>
+          </div>
+        </section>
+
+        <dialog class="flash-confirm-dialog" id="flash-confirm-dialog" aria-labelledby="flash-confirm-title">
+          <form method="dialog">
+            <p class="eyebrow">FLASH CONFIRMATION</p>
+            <h2 id="flash-confirm-title">Ready to flash?</h2>
+            <p class="flash-confirm-copy" id="flash-confirm-copy"></p>
+            <div class="flash-confirm-actions">
+              <button class="button button-small" type="submit" value="cancel" autofocus>CANCEL</button>
+              <button class="button button-flash" type="submit" value="confirm">CONFIRM AND FLASH</button>
+            </div>
+          </form>
+        </dialog>
+
+        <footer class="page-footer">
+          <span>MADE WITH <span class="footer-heart">♥</span> BY QRS WEB FLASHER</span>
+          <span>POWERED BY QRS WEB &amp; MEDUSA FLASHER</span>
+        </footer>
+      </main>
+    </div>
+
+    <template id="firmware-row-template">
+      <div class="firmware-row">
+        <span class="file-icon" aria-hidden="true">BIN</span>
+        <span class="file-name" title=""></span>
+        <span class="file-size"></span>
+        <label class="address-field">
+          <span>ADDRESS</span>
+          <input class="address-input" type="text" inputmode="text" placeholder="e.g. 0x10000" aria-label="Flash address" spellcheck="false" />
+        </label>
+        <button class="remove-file" type="button" aria-label="Remove firmware file">×</button>
+      </div>
+    </template>
+  </body>
+</html>

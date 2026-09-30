@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#070611" />
+    <meta
+      name="description"
+      content="QRS Web Flasher owner dashboard preview for reviewing demo top-ups and managing credits."
+    />
+    <link rel="icon" type="image/jpeg" href="./qrs-brand-photo.jpg" />
+    <title>Owner Dashboard — QRS Web Flasher</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./credit-dashboard.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="./index.html" aria-label="Return to QRS Web Flasher">
+          <img class="brand-logo" src="./qrs-brand-photo.jpg" alt="" />
+          <span class="brand-copy">
+            <span class="brand-name">QRS <strong>ESP32</strong></span>
+            <span class="brand-caption">OWNER DASHBOARD</span>
+          </span>
+        </a>
+        <a class="dashboard-tab" href="./index.html">CLIENT PAGE</a>
+      </header>
+
+      <main>
+        <div class="demo-notice" role="note">
+          Demo only: this password prompt is client-side and is not secure authentication. A real owner dashboard must verify access on a server. No real GCash, Palawan Pay, GoTyme Bank, or PayMaya payments are processed or verified.
+        </div>
+
+        <section class="credit-panel owner-login-panel" id="owner-login-panel" aria-labelledby="owner-login-title">
+          <div class="dashboard-heading">
+            <div>
+              <p class="eyebrow">RESTRICTED PAGE</p>
+              <h1 id="owner-login-title">Owner sign in</h1>
+            </div>
+          </div>
+          <form id="owner-login-form" class="owner-login-form">
+            <label class="dashboard-field" for="owner-password">
+              <span>Password</span>
+              <input id="owner-password" type="password" autocomplete="current-password" required />
+            </label>
+            <button class="button button-connect topup-submit" type="submit">OPEN OWNER DASHBOARD</button>
+          </form>
+          <p class="dashboard-feedback" id="owner-login-feedback" role="status" hidden></p>
+        </section>
+
+        <div id="owner-dashboard" hidden>
+        <section class="credit-panel" aria-labelledby="owner-dashboard-title">
+          <div class="dashboard-heading">
+            <div>
+              <p class="eyebrow">OWNER DASHBOARD · DEMO MODE</p>
+              <h1 id="owner-dashboard-title">Credit management</h1>
+            </div>
+            <span class="demo-tag">LOCAL DEMO DATA</span>
+          </div>
+
+          <div class="owner-stats">
+            <div class="owner-stat">
+              <span>CLIENT BALANCE</span>
+              <strong id="owner-credit-balance">0</strong>
+            </div>
+            <div class="owner-stat">
+              <span>PENDING REQUESTS</span>
+              <strong id="owner-pending-count">0</strong>
+            </div>
+            <div class="owner-stat">
+              <span>APPROVED TOP-UPS</span>
+              <strong id="owner-approved-count">0</strong>
+            </div>
+          </div>
+
+          <form class="topup-form owner-adjustment-form" id="owner-adjustment-form">
+            <label class="dashboard-field" for="owner-credit-adjustment">
+              <span>Credits to add / remove</span>
+              <input id="owner-credit-adjustment" type="number" min="-10000" max="10000" step="1" placeholder="e.g. 25 or -5" required />
+            </label>
+            <label class="dashboard-field adjustment-note-field" for="owner-adjustment-note">
+              <span>Adjustment note</span>
+              <input id="owner-adjustment-note" type="text" maxlength="120" placeholder="Reason for the adjustment" required />
+            </label>
+            <button class="button button-connect topup-submit" type="submit">APPLY CREDIT ADJUSTMENT</button>
+          </form>
+          <p class="dashboard-help">Manual adjustments affect the demo client only. Negative adjustments cannot reduce the balance below zero.</p>
+          <p class="dashboard-feedback" id="owner-feedback" role="status" hidden></p>
+
+          <div class="table-heading">
+            <h2>Payment review queue</h2>
+            <span class="file-count" id="owner-request-count">0 REQUESTS</span>
+          </div>
+          <div class="request-list" id="owner-request-list" aria-live="polite"></div>
+        </section>
+
+        <footer class="page-footer">
+          <button class="button button-small" id="owner-logout-button" type="button">LOCK OWNER DASHBOARD</button>
+          <span><a href="./index.html">RETURN TO CLIENT PAGE</a></span>
+          <span>DEMO DASHBOARD · NO LIVE PAYMENTS</span>
+        </footer>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
